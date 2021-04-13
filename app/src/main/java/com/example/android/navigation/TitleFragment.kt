@@ -8,9 +8,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.android.navigation.databinding.FragmentTitleBinding
+import com.google.android.gms.analytics.HitBuilders
 
 class TitleFragment : Fragment() {
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -25,7 +25,18 @@ class TitleFragment : Fragment() {
         // 4. Call setHasOptionsMenu() in onCreateView of TitleFragment
         setHasOptionsMenu(true)
 
+
+        val application = requireActivity().application as TriviaApplication
+        val tracker = application.getDefaultTracker()
+
+
         binding.playButton.setOnClickListener {
+            tracker?.send(
+                    HitBuilders.EventBuilder()
+                            .setCategory("Title Fragment")
+                            .setAction("Play Button Clicked")
+                            .build()
+            )
             view?.findNavController()?.navigate(R.id.action_titleFragment_to_gameFragment)
         }
 
